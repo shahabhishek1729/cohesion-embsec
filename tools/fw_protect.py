@@ -15,33 +15,24 @@ from base64 import b64encode
 
 def protect_firmware(infile, outfile, version, message):
     # Load firmware binary from infile
-    with open(infile, "rb") as fp:
-       firmware = pad(fp.read(), 250)
+    with open(infile, "rb") as f:
+       firmware = f.read()
+
+    firmware = version.to_bytes(2) + len(message).to_bytes(2) + message.encode() + len(firmware).to_bytes(4) + firmware
 
     # Write code here
-    header = b'\x00\x00\x00'
     key = open('secret_key.txt', 'rb').read()
 
-    protected_firmware = ''
+    cipher = AES.new(key, AES.MODE_GCM)
+    nonce = cipher.nonce
 
-    for chunk in range(0, len(firmware), 250):
-        chunk = firmware[chunk:chunk+250]
-        cipher = AES.new(key, AES.MODE_GCM)
-        cipher.update(header)
-        nonce = cipher.nonce
-
-
-        ciphertext, tag = cipher.encrypt_and_digest(header + chunk)
-        encrypted_message = b64encode(nonce + tag + ciphertext).decode('utf-8')
+    ciphertext, tag = cipher.encrypt_and_digest(firmware)
+    encrypted_message = nonce + tag + ciphertext
 
     # Append null-terminated message to end of firmware
-    firmware_and_message = protected_firmware.encode() + b"\00"
+    firmware_blob = encrypted_message + b"\00"
 
-    # Pack version and size into two little-endian shorts
-    metadata = p16(version, endian='little') + p16(len(firmware), endian='little')  
-
-    # Append firmware and message to metadata
-    firmware_blob = metadata + firmware_and_message
+    print(ciphertext)
 
     # Write firmware blob to outfile
     with open(outfile, "wb+") as outfile:

@@ -53,12 +53,12 @@ def send_metadata(ser, metadata, debug=False):
     if debug:
         print(metadata)
 
-    ser.write(metadata)
+    #ser.write(metadata)
 
     # Wait for an OK from the bootloader.
-    resp = ser.read(1)
-    if resp != RESP_OK:
-        raise RuntimeError("ERROR: Bootloader responded with {}".format(repr(resp)))
+    #resp = ser.read(1)
+    #if resp != RESP_OK:
+    #    raise RuntimeError("ERROR: Bootloader responded with {}".format(repr(resp)))
 
 
 def send_frame(ser, frame, debug=False):
@@ -67,15 +67,15 @@ def send_frame(ser, frame, debug=False):
     if debug:
         print_hex(frame)
 
-    resp = ser.read(1)  # Wait for an OK from the bootloader
+    # resp = ser.read(1)  # Wait for an OK from the bootloader
 
-    time.sleep(0.1)
+    # time.sleep(0.1)
 
-    if resp != RESP_OK:
-        raise RuntimeError("ERROR: Bootloader responded with {}".format(repr(resp)))
-
-    if debug:
-        print("Resp: {}".format(ord(resp)))
+    # if resp != RESP_OK:
+        # raise RuntimeError("ERROR: Bootloader responded with {}".format(repr(resp)))
+# 
+    # if debug:
+        # print("Resp: {}".format(ord(resp)))
 
 
 def update(ser, infile, debug):
@@ -83,27 +83,34 @@ def update(ser, infile, debug):
     with open(infile, "rb") as fp:
         firmware_blob = fp.read()
 
-    metadata = firmware_blob[:4]
-    firmware = firmware_blob[4:]
+    for i in range(0, len(firmware_blob), 30):
+        print("Sent more")
+        chunk = firmware_blob[i: min(i+30, len(firmware_blob))]
 
-    send_metadata(ser, metadata, debug=debug)
+        #metadata = firmware_blob[:4]
+        #firmware = firmware_blob[4:]
 
-    for idx, frame_start in enumerate(range(0, len(firmware), FRAME_SIZE)):
-        data = firmware[frame_start : frame_start + FRAME_SIZE]
+    #send_metadata(ser, metadata, debug=debug)
+
+    #for idx, frame_start in enumerate(range(0, len(firmware), FRAME_SIZE)):
+        #data = firmware[frame_start : frame_start + FRAME_SIZE]
 
         # Construct frame.
-        frame = p16(len(data), endian='big') + data
+        # frame = p16(len(data), endian='big') + data
 
-        send_frame(ser, frame, debug=debug)
-        print(f"Wrote frame {idx} ({len(frame)} bytes)")
+        ser.write(p16(0x0001, endian="big"))
+        send_frame(ser, chunk, debug=True)
+
+        #print(f"Wrote frame {idx} ({len(frame)} bytes)")
 
     print("Done writing firmware.")
 
     # Send a zero length payload to tell the bootlader to finish writing it's page.
     ser.write(p16(0x0000, endian='big'))
-    resp = ser.read(1)  # Wait for an OK from the bootloader
-    if resp != RESP_OK:
-        raise RuntimeError("ERROR: Bootloader responded to zero length frame with {}".format(repr(resp)))
+    resp = ser.read(2)  # Wait for an OK from the bootloader
+    print(resp)
+    # if resp != RESP_OK:
+        # raise RuntimeError("ERROR: Bootloader responded to zero length frame with {}".format(repr(resp)))
     print(f"Wrote zero length frame (2 bytes)")
 
     return ser
