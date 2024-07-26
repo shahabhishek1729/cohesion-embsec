@@ -35,7 +35,7 @@ def protect_firmware(infile, outfile, version, message):
     ciphertext, tag = cipher.encrypt_and_digest(firmware_packed)
     print(f"Post-encryption: {ciphertext[:30]}")
     # encrypted_message = nonce + tag + ciphertext
-    firmware_blob = p16(len(nonce), endian='little') + nonce + p16(len(tag), endian='little') + tag + p16(len(message), endian='little') + message + ciphertext + b"\00"
+    firmware_blob = p16(len(nonce), endian='little') + nonce + p16(len(tag), endian='little') + tag + p16(len(message), endian='little') + message.encode('ascii') + ciphertext + b"\00"
 
     # Write firmware blob to outfile
     with open(outfile, "wb+") as outfile:
