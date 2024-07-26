@@ -30,7 +30,7 @@ MEMORY
 
 SECTIONS
 {
-    .text :
+     .text :
     {
         _text = .;
         KEEP(*(.isr_vector))

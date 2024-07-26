@@ -36,15 +36,18 @@ def make_bootloader() -> bool:
 
         # create secrets header for bootloader and write
         with open("/home/hacker/cohesion-embsec/bootloader/inc/secrets.h", "w") as secrets_header:
+            # write dependencies
+            secrets_header.write(f'#include <stdlib.h>\n')
+
             # write lengths
             secrets_header.write(f'#define AES_KEY_LEN {AES_KEY_LEN}\n')
-            secrets_header.write(f'#define IV_LEN {IV_LEN}\n')
+            secrets_header.write(f'#define AES_IV_LEN {IV_LEN}\n')
 
             # write aes key within "aes_key" section of compiled binary
-            secrets_header.write(f'uint8_t AES_KEY[] __attribute__((section(".aes_key"))) = {{{c_aes_key}}};\n')
+            secrets_header.write(f'uint8_t AES_KEY[] = {{{c_aes_key}}};\n')
 
             # write iv
-            secrets_header.write(f'const uint8_t IV[] = {{{c_iv}}};\n')
+            secrets_header.write(f'const uint8_t AES_IV[] = {{{c_iv}}};\n')
 
         # write to secrets text file
         secrets_txt.write(aes_key)

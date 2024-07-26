@@ -43,6 +43,9 @@ void uart_write_hex_bytes(uint8_t, uint8_t *, uint32_t);
 #define UPDATE ((unsigned char)'U')
 #define BOOT ((unsigned char)'B')
 
+// Secrets
+#include "/home/hacker/cohesion-embsec/bootloader/inc/secrets.h"
+
 // Device metadata
 uint16_t * fw_version_address = (uint16_t *)METADATA_BASE;
 uint16_t * fw_size_address = (uint16_t *)(METADATA_BASE + 2);
@@ -76,7 +79,6 @@ void debug_delay_led() {
     GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_3, 0x0);
 }
 
-
 int main(void) {
 
     // Enable the GPIO port that is used for the on-board LED.
@@ -91,7 +93,6 @@ int main(void) {
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_3);
 
     // debug_delay_led();
-
     initialize_uarts(UART0);
 
     uart_write_str(UART0, "Welcome to the BWSI Vehicle Update Service!\n");
