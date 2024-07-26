@@ -45,6 +45,7 @@ def send_metadata(ser, metadata, debug=False):
     ser.write(b"U")
 
     print("Waiting for bootloader to enter update mode...")
+
     while ser.read(1).decode() != "U":
         print("got a byte")
         pass
@@ -54,6 +55,18 @@ def send_metadata(ser, metadata, debug=False):
         print(metadata)
 
     ser.write(metadata)
+
+    # Wait for an OK from the bootloader.
+    resp = ser.read(1)
+    if resp != RESP_OK:
+        raise RuntimeError("ERROR: Bootloader responded with {}".format(repr(resp)))
+
+def send_aes_info(ser, iv, tag):
+    assert len(iv) == 16
+    assert len(tag) == 16
+
+    ser.write(iv)
+    ser.write(tag)
 
     # Wait for an OK from the bootloader.
     resp = ser.read(1)
@@ -83,10 +96,25 @@ def update(ser, infile, debug):
     with open(infile, "rb") as fp:
         firmware_blob = fp.read()
 
-    metadata = firmware_blob[:4]
-    firmware = firmware_blob[4:]
+    aes_info = firmware_blob[4:40]
+
+    iv_len = u16(firmware_blob[:2], endian='little')
+    assert iv_len == 16
+    iv = firmware_blob[2:18]
+
+    tag_len = u16(firmware_blob[18:20], endian='little')
+    assert tag_len == 16
+    tag = firmware_blob[20:36]
+
+    message_len = (firmware_blob[37] << 8) + firmware_blob[36]
+    message = firmware_blob[38:(38 + message_len - 1)]
+
+    metadata = firmware_blob[(38 + message_len):(38 + message_len + 4)]
+    firmware = firmware_blob[(38 + message_len + 4):]
 
     send_metadata(ser, metadata, debug=debug)
+    send_aes_info(ser, iv, tag)
+    print("DONE with aes")
 
     for idx, frame_start in enumerate(range(0, len(firmware), FRAME_SIZE)):
         data = firmware[frame_start : frame_start + FRAME_SIZE]

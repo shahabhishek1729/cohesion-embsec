@@ -163,6 +163,22 @@ void load_firmware(void) {
 
     uart_write(UART0, OK); // Acknowledge the metadata.
 
+    // Get the IV and authentication tag
+    char iv[16];
+    for (int i = 0; i < 16; i++) {
+	rcv = uart_read(UART0, BLOCKING, &read);
+	iv[i] = rcv;
+    }
+
+    char tag[16];
+    for (int i = 0; i < 16; i++) {
+	rcv = uart_read(UART0, BLOCKING, &read);
+	tag[i] = rcv;
+    }
+
+    uart_write(UART0, OK); // Acknowledge the IV and tag.
+
+
     /* Loop here until you can get all your characters and stuff */
     while (1) {
 
@@ -180,6 +196,13 @@ void load_firmware(void) {
 
         // If we filed our page buffer, program it
         if (data_index == FLASH_PAGESIZE || frame_length == 0) {
+	    // Decrypt the data collected
+	    // Aes dec;
+	    // wc_AesInit(&dec, NULL, INVALID_DEVID);
+            // wc_AesSetKey(&dec, "Segmentation fault (core dumped)", 32, iv, AES_DECRYPTION);
+            // wc_AesSetIV(&dec, iv);
+            // wc_AesGcmDecrypt(&dec, data, data, sizeof(data) - 1, iv, 16, tag, 16, NULL, 0);
+	
             // Try to write flash and check for error
             if (program_flash((uint8_t *) page_addr, data, data_index)) {
                 uart_write(UART0, ERROR); // Reject the firmware
