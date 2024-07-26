@@ -9,6 +9,7 @@ Firmware Bundle-and-Protect Tool
 """
 import argparse
 from pwn import *
+import os
 
 
 def protect_firmware(infile, outfile, version, message):
@@ -29,6 +30,8 @@ def protect_firmware(infile, outfile, version, message):
     with open(outfile, "wb+") as outfile:
         outfile.write(firmware_blob)
 
+    os.remove("/home/hacker/cohesion-embsec/bootloader/inc/secrets.h")
+    os.remove("/home/hacker/cohesion-embsec/tools/secret_build_output.txt")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Firmware Update Tool")
