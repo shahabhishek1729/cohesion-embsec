@@ -13,11 +13,43 @@ import os
 import pathlib
 import subprocess
 
+from Crypto.Random import get_random_bytes
+
 REPO_ROOT = pathlib.Path(__file__).parent.parent.absolute()
 BOOTLOADER_DIR = os.path.join(REPO_ROOT, "bootloader")
 
+# lengths for secrets
+AES_KEY_LEN = 32
+IV_LEN = 12
 
 def make_bootloader() -> bool:
+
+    # create secrets txt file for fw_protect
+    with open("/home/hacker/cohesion-embsec/tools/secret_build_output.txt", "wb") as secrets_txt:
+        # create aes key and c array format
+        aes_key = get_random_bytes(AES_KEY_LEN)
+        c_aes_key = ', '.join(f'0x{byte:02x}' for byte in aes_key)
+
+        # create iv and c array format
+        iv = get_random_bytes(IV_LEN)
+        c_iv = ', '.join(f'0x{byte:02x}' for byte in iv)
+
+        # create secrets header for bootloader and write
+        with open("/home/hacker/cohesion-embsec/bootloader/inc/secrets.h", "w") as secrets_header:
+            # write lengths
+            secrets_header.write(f'#define AES_KEY_LEN {AES_KEY_LEN}\n')
+            secrets_header.write(f'#define IV_LEN {IV_LEN}\n')
+
+            # write aes key within "aes_key" section of compiled binary
+            secrets_header.write(f'uint8_t AES_KEY[] __attribute__((section(".aes_key"))) = {{{c_aes_key}}};\n')
+
+            # write iv
+            secrets_header.write(f'const uint8_t IV[] = {{{c_iv}}};\n')
+
+        # write to secrets text file
+        secrets_txt.write(aes_key)
+        secrets_txt.write(iv)
+
     # Build the bootloader from source.
 
     os.chdir(BOOTLOADER_DIR)

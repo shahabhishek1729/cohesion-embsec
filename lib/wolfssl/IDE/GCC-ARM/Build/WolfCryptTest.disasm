@@ -1,0 +1,15 @@
+
+Build/WolfCryptTest.elf:     file format elf32-littlearm
+
+
+Disassembly of section .init:
+
+00000000 <_init>:
+   0:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+   2:	bf00      	nop
+
+Disassembly of section .fini:
+
+00000004 <_fini>:
+   4:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+   6:	bf00      	nop

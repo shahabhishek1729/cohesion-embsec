@@ -1,0 +1,693 @@
+
+bio.o:
+
+crl.o:
+
+internal.o:
+
+keys.o:
+
+ocsp.o:
+
+sniffer.o:
+
+ssl.o:
+
+tls.o:
+
+tls13.o:
+
+wolfio.o:
+
+aes.o:
+         U memcpy
+         U memset
+         U wc_RNG_GenerateBlock
+00000000 t ByteReverseWord32
+00000000 t ByteReverseWords
+00000000 T GHASH
+00000000 t GMULT
+00000000 t IncrementGcmCounter
+00000000 r rcon
+00000000 r Td
+00000000 r Td4
+00000000 r Te
+00000000 T wc_AesCbcDecrypt
+00000000 T wc_AesCbcEncrypt
+00000000 t wc_AesEncrypt
+00000000 T wc_AesFree
+00000000 T wc_AesGcmDecrypt
+00000000 T wc_AesGcmEncrypt
+00000000 T wc_AesGcmEncrypt_ex
+00000000 T wc_AesGcmSetExtIV
+00000000 T wc_AesGcmSetIV
+00000000 T wc_AesGcmSetKey
+00000000 T wc_AesGetKeySize
+00000000 T wc_AesInit
+00000000 T wc_AesSetIV
+00000000 T wc_AesSetKey
+00000000 T wc_Gmac
+00000000 T wc_GmacSetKey
+00000000 T wc_GmacUpdate
+00000000 T wc_GmacVerify
+00000000 t xorbuf
+00000000 t xorbufout
+
+cmac.o:
+
+des3.o:
+
+dh.o:
+         U __aeabi_d2uiz
+         U __aeabi_dmul
+         U __aeabi_dsub
+         U __aeabi_ui2d
+         U log
+         U pow
+         U sp_2expt
+         U sp_add_d
+         U sp_clear
+         U sp_cmp
+         U sp_cmp_d
+         U sp_copy
+         U sp_exptmod
+         U sp_forcezero
+         U sp_init
+         U sp_init_multi
+         U sp_mod
+         U sp_prime_is_prime
+         U sp_prime_is_prime_ex
+         U sp_read_unsigned_bin
+         U sp_sub_d
+         U sp_to_unsigned_bin
+         U sp_unsigned_bin_size
+         U wc_RNG_GenerateBlock
+00000000 t _DhSetKey
+00000000 t _ffc_pairwise_consistency_test
+00000000 t _ffc_validate_public_key
+00000000 t GeneratePrivateDh186
+00000000 t GeneratePublicDh
+00000000 T wc_DhAgree
+00000000 t wc_DhAgree_Sync
+00000000 T wc_DhCheckKeyPair
+00000000 T wc_DhCheckPrivKey
+00000000 T wc_DhCheckPrivKey_ex
+00000000 T wc_DhCheckPubKey
+00000000 T wc_DhCheckPubKey_ex
+00000000 T wc_DhCheckPubValue
+00000000 T wc_DhCmpNamedKey
+00000000 T wc_DhCopyNamedKey
+00000000 T wc_DhGenerateKeyPair
+00000000 T wc_DhGetNamedKeyMinSize
+00000000 T wc_DhGetNamedKeyParamSize
+00000000 T wc_DhSetCheckKey
+00000000 T wc_DhSetKey
+00000000 T wc_DhSetKey_ex
+00000000 T wc_DhSetNamedKey
+00000000 T wc_FreeDhKey
+00000000 T wc_InitDhKey
+00000000 T wc_InitDhKey_ex
+
+ecc.o:
+
+hmac.o:
+         U memcpy
+         U memset
+         U wc_InitSha256_ex
+         U wc_InitSha_ex
+         U wc_Sha256Final
+         U wc_Sha256Free
+         U wc_Sha256Update
+         U wc_ShaFinal
+         U wc_ShaFree
+         U wc_ShaUpdate
+00000000 t HmacKeyInnerHash
+00000000 T _InitHmac
+00000000 T wc_HmacFinal
+00000000 T wc_HmacFree
+00000000 T wc_HmacInit
+00000000 T wc_HmacSetKey
+00000000 T wc_HmacSetKey_ex
+00000000 T wc_HmacSizeByType
+00000000 T wc_HmacUpdate
+00000000 T wolfSSL_GetHmacMaxSize
+
+kdf.o:
+
+random.o:
+         U fprintf
+         U _impure_ptr
+         U memcpy
+         U memset
+         U my_rng_seed_gen
+         U wc_InitSha256
+         U wc_Sha256Final
+         U wc_Sha256Free
+         U wc_Sha256Update
+00000000 t array_add.part.0.constprop.0
+00000000 t ConstantCompare
+00000000 t ForceZero
+00000000 t Hash_df.constprop.0
+00000000 t Hash_DRBG_Generate
+00000000 t Hash_DRBG_Instantiate.isra.0
+00000000 t Hash_DRBG_Reseed.part.0
+00000000 t Hash_DRBG_Uninstantiate
+00000000 t _InitRng
+00000000 R outputA_data
+00000000 R outputB_data
+00000000 R reseedSeedA_data
+00000000 R seedA_data
+00000000 R seedB_data
+00000000 T wc_FreeRng
+00000000 T wc_GenerateSeed
+00000000 T wc_InitRng
+00000000 T wc_InitRng_ex
+00000000 T wc_InitRngNonce
+00000000 T wc_InitRngNonce_ex
+00000000 T wc_RNG_DRBG_Reseed
+00000000 T wc_rng_free
+00000000 T wc_RNG_GenerateBlock
+00000000 T wc_RNG_GenerateByte
+00000000 T wc_RNG_HealthTest
+00000000 T wc_RNG_HealthTest_ex
+00000000 T wc_rng_new
+00000000 T wc_rng_new_ex
+00000000 T wc_RNG_TestSeed
+
+rsa.o:
+         U memcmp
+         U memcpy
+         U memset
+         U sp_clear
+         U sp_count_bits
+         U sp_exptmod_nct
+         U sp_forcezero
+         U sp_init
+         U sp_init_size
+         U sp_read_unsigned_bin
+         U sp_to_unsigned_bin_len_ct
+         U sp_unsigned_bin_size
+         U wc_Hash
+         U wc_HashGetDigestSize
+00000000 t RsaMGF1.isra.0
+00000000 t RsaMGF.isra.0
+00000000 t RsaPrivateDecryptEx.constprop.0.isra.0
+00000000 t RsaUnPad_OAEP.isra.0
+00000000 t RsaUnPad_PSS.isra.0
+00000000 T wc_FreeRsaKey
+00000000 T wc_hash2mgf
+00000000 T wc_InitRsaKey
+00000000 T wc_InitRsaKey_ex
+00000000 T wc_RsaEncryptSize
+00000000 T wc_RsaFunction
+00000000 t wc_RsaFunction_ex.isra.0
+00000000 T wc_RsaPSS_CheckPadding
+00000000 T wc_RsaPSS_CheckPadding_ex
+00000000 T wc_RsaPSS_CheckPadding_ex2
+00000000 T wc_RsaPSS_Verify
+00000000 T wc_RsaPSS_VerifyCheck
+00000000 T wc_RsaPSS_VerifyCheckInline
+00000000 T wc_RsaPSS_Verify_ex
+00000000 T wc_RsaPSS_VerifyInline
+00000000 T wc_RsaPSS_VerifyInline_ex
+00000000 T wc_RsaSetRNG
+00000000 T wc_RsaSSL_VerifyInline
+00000000 T wc_RsaUnPad_ex
+00000000 t xorbuf
+
+sha.o:
+         U memcpy
+         U memset
+00000000 t ByteReverseWords
+00000000 t Transform
+00000000 T wc_InitSha
+00000000 T wc_InitSha_ex
+00000000 T wc_ShaCopy
+00000000 T wc_ShaFinal
+00000000 T wc_ShaFinalRaw
+00000000 T wc_ShaFree
+00000000 T wc_ShaGetHash
+00000000 T wc_ShaUpdate
+
+sha256.o:
+         U memcpy
+         U memset
+00000000 t ByteReverseWords
+00000000 r K
+00000000 t Transform_Sha256
+00000000 T wc_InitSha256
+00000000 T wc_InitSha256_ex
+00000000 T wc_Sha256Copy
+00000000 T wc_Sha256Final
+00000000 T wc_Sha256FinalRaw
+00000000 T wc_Sha256Free
+00000000 T wc_Sha256GetHash
+00000000 T wc_Sha256Update
+
+sha512.o:
+
+sha3.o:
+
+asm.o:
+
+asn.o:
+         U gmtime_r
+         U memcmp
+         U memcpy
+         U memmove
+         U memset
+         U my_time
+         U sp_clear
+         U sp_cmp
+         U sp_init
+         U sp_leading_bit
+         U sp_read_unsigned_bin
+         U sp_to_unsigned_bin
+         U sp_unsigned_bin_size
+         U wc_FreeRsaKey
+         U wc_InitRsaKey
+         U wc_ShaHash
+00000000 r algoIdASN
+00000000 r attrEmailOid
+00000000 r bitStringASN
+00000000 r blkAes128CbcOid
+00000000 r blkAes128GcmOid
+00000000 r blkAes192CbcOid
+00000000 r blkAes192GcmOid
+00000000 r blkAes256CbcOid
+00000000 r blkAes256GcmOid
+00000000 t BytePrecision
+00000000 T CalcHashId
+00000000 T CalcHashId_ex
+00000000 r certNameASN
+00000000 r certNameSubject
+00000000 T CheckBitString
+00000000 r CSWTCH.347
+00000000 r dateASN
+00000000 T DateGreaterThan
+00000000 r dcOid
+00000000 t DecodeRsaPssParams
+00000000 r dhParamASN
+00000000 r dhSinglePass_stdDH_sha1kdf_Oid
+00000000 r dhSinglePass_stdDH_sha256kdf_Oid
+00000000 r digestInfoASN
+00000000 r extAltNamesHwNameOid
+00000000 r extAltNamesOid
+00000000 r extAuthInfoCaIssuerOid
+00000000 r extAuthInfoOcspOid
+00000000 r extAuthInfoOid
+00000000 r extAuthKeyOid
+00000000 r extBasicCaOid
+00000000 r extCertPolicyAnyOid
+00000000 r extCertPolicyOid
+00000000 r extCrlDistOid
+00000000 r extExtKeyUsageAnyOid
+00000000 r extExtKeyUsageClientAuthOid
+00000000 r extExtKeyUsageCodeSigningOid
+00000000 r extExtKeyUsageEmailProtectOid
+00000000 r extExtKeyUsageOcspSignOid
+00000000 r extExtKeyUsageOid
+00000000 r extExtKeyUsageServerAuthOid
+00000000 r extExtKeyUsageTimestampOid
+00000000 r extInhibitAnyOid
+00000000 r extKeyUsageOid
+00000000 r extNameConsOid
+00000000 T ExtractDate
+00000000 r extSubjKeyOid
+00000000 r fvrtDrk
+00000000 T GetAlgoId
+00000000 t GetASNHeader_ex
+00000000 T GetASNInt
+00000000 T GetASN_Items
+00000000 T GetASNObjectId
+00000000 T GetASNTag
+00000000 T GetInt
+00000000 T GetLength
+00000000 T GetLength_ex
+00000000 T GetMyVersion
+00000000 T GetName
+00000000 T GetNameHash
+00000000 T GetNameHash_ex
+00000000 T GetObjectId
+00000000 T GetOctetString
+00000000 T GetSequence
+00000000 T GetSequence_ex
+00000000 T GetSet
+00000000 T GetSet_ex
+00000000 T GetSigName
+00000000 t GetTime
+00000000 T HashIdAlg
+00000000 r hashSha1hOid
+00000000 r hashSha256hOid
+00000000 r hmacSha256Oid
+00000000 r intASN
+00000000 r keyDhOid
+00000000 r keyRsaOid
+00000000 r keyRsaPssOid
+00000000 r nameHashASN
+00000000 r objectIdASN
+00000000 T OidFromId
+00000000 r pbes2
+00000000 r pbkdf2Oid
+00000000 r pkcs8KeyASN
+00000000 r rdnASN
+00000000 r rdnChoice
+00000000 D rsaIntOffset
+00000000 r rsaKeyASN
+00000000 t _RsaPrivateKeyDecode
+00000000 r rsaPssParamsASN
+00000000 r rsaPublicKeyASN
+00000000 T SetAlgoID
+00000000 T SetASN_Items
+00000000 T SetASNLength
+00000000 t SetASN_Num
+00000000 T SetExplicit
+00000000 t SetHeader
+00000000 T SetImplicit
+00000000 T SetLength
+00000000 T SetLengthEx
+00000000 T SetMyVersion
+00000000 T SetObjectId
+00000000 T SetOctetString
+00000000 T SetOctetStringEx
+00000000 T SetSequence
+00000000 T SetSequenceEx
+00000000 T SetSet
+00000000 r sigRsaSsaPssName
+00000000 r sigRsaSsaPssOid
+00000000 r sigSha1wRsaName
+00000000 r sigSha1wRsaOid
+00000000 r sigSha256wRsaName
+00000000 r sigSha256wRsaOid
+00000000 r sigUnknownName
+00000000 T SizeASN_Items
+00000000 t SizeASN_Num
+00000000 b timeFunc
+00000000 T ToTraditional
+00000000 T ToTraditional_ex
+00000000 T ToTraditionalInline
+00000000 T ToTraditionalInline_ex
+00000000 T ToTraditionalInline_ex2
+00000000 r uidOid
+00000000 T wc_CheckPrivateKey
+00000000 T wc_CheckPrivateKeyCert
+00000000 t wc_CheckPrivateKey.part.0
+00000000 T wc_CreatePKCS8Key
+00000000 T wc_DhKeyDecode
+00000000 T wc_DhParamsLoad
+00000000 T wc_EncodeSignature
+00000000 T wc_GetDateAsCalendarTime
+00000000 T wc_GetDateInfo
+00000000 T wc_GetPkcs8TraditionalOffset
+00000000 T wc_GetTime
+00000000 T wc_RsaPrivateKeyDecode
+00000000 T wc_RsaPrivateKeyValidate
+00000000 T wc_RsaPublicKeyDecode
+00000000 T wc_RsaPublicKeyDecode_ex
+00000000 T wc_RsaPublicKeyDecodeRaw
+00000000 T wc_SetTimeCb
+00000000 T wc_Time
+00000000 T wc_ValidateDate
+00000000 r wrapAes128Oid
+00000000 r wrapAes192Oid
+00000000 r wrapAes256Oid
+
+blake2s.o:
+
+chacha.o:
+
+chacha20_poly1305.o:
+
+coding.o:
+00000000 t Base64_Char2Val
+00000000 r base64Decode
+00000000 T Base64_Decode
+00000000 r base64Encode
+00000000 T Base64_Encode
+00000000 T Base64_EncodeEsc
+00000000 T Base64_Encode_NoNl
+00000000 T Base64_SkipNewline
+00000000 t CEscape
+00000000 t DoBase64_Encode
+
+compress.o:
+
+cpuid.o:
+
+cryptocb.o:
+
+curve25519.o:
+
+curve448.o:
+
+ecc_fp.o:
+
+eccsi.o:
+
+ed25519.o:
+
+ed448.o:
+
+error.o:
+         U strncpy
+00000000 r CSWTCH.1
+00000000 T wc_ErrorString
+00000000 T wc_GetErrorString
+
+fe_448.o:
+
+fe_low_mem.o:
+
+fe_operations.o:
+
+ge_448.o:
+
+ge_low_mem.o:
+
+ge_operations.o:
+
+hash.o:
+         U wc_InitSha256_ex
+         U wc_InitSha_ex
+         U wc_Sha256Final
+         U wc_Sha256Free
+         U wc_Sha256Update
+         U wc_ShaFinal
+         U wc_ShaFree
+         U wc_ShaUpdate
+00000000 T wc_Hash
+00000000 T wc_Hash_ex
+00000000 T wc_HashFinal
+00000000 T wc_HashFree
+00000000 T wc_HashGetBlockSize
+00000000 T wc_HashGetDigestSize
+00000000 T wc_HashGetOID
+00000000 T wc_HashInit
+00000000 T wc_HashInit_ex
+00000000 T wc_HashTypeConvert
+00000000 T wc_HashUpdate
+00000000 T wc_OidGetHash
+00000000 T wc_Sha256Hash
+00000000 T wc_Sha256Hash_ex
+00000000 T wc_ShaHash
+00000000 T wc_ShaHash_ex
+
+integer.o:
+
+logging.o:
+00000000 T wolfSSL_Debugging_OFF
+00000000 T wolfSSL_Debugging_ON
+00000000 T wolfSSL_GetLoggingCb
+00000000 T wolfSSL_SetLoggingCb
+00000000 T wolfSSL_SetLoggingPrefix
+
+md5.o:
+
+memory.o:
+
+misc.o:
+
+pkcs12.o:
+
+pkcs7.o:
+
+poly1305.o:
+
+pwdbased.o:
+
+rc2.o:
+
+sakke.o:
+
+signature.o:
+         U memcmp
+         U memcpy
+         U memset
+         U wc_EncodeSignature
+         U wc_Hash
+         U wc_HashGetDigestSize
+         U wc_HashGetOID
+         U wc_RsaEncryptSize
+         U wc_RsaSSL_VerifyInline
+00000000 T wc_SignatureGenerate
+00000000 T wc_SignatureGenerate_ex
+00000000 T wc_SignatureGenerateHash
+00000000 T wc_SignatureGenerateHash_ex
+00000000 T wc_SignatureGetSize
+00000000 T wc_SignatureVerify
+00000000 T wc_SignatureVerifyHash
+
+srp.o:
+
+sp_arm32.o:
+
+sp_arm64.o:
+
+sp_armthumb.o:
+
+sp_c32.o:
+
+sp_c64.o:
+
+sp_cortexm.o:
+
+sp_dsp32.o:
+
+sp_int.o:
+         U __aeabi_uldivmod
+         U memcpy
+         U memmove
+         U memset
+         U sp_add
+         U wc_RNG_GenerateBlock
+00000000 T CheckRunTimeFastMath
+00000000 T CheckRunTimeSettings
+00000000 T sp_2expt
+00000000 T sp_add_d
+00000000 T sp_clear
+00000000 T sp_cmp
+00000000 t _sp_cmp_abs
+00000000 T sp_cmp_d
+00000000 t _sp_copy
+00000000 T sp_copy
+00000000 T sp_count_bits
+00000000 t _sp_div
+00000000 T sp_div
+00000000 t sp_div_primes
+00000000 t _sp_div_same_size
+00000000 T sp_exch
+00000000 T sp_exptmod
+00000000 T sp_exptmod_ex
+00000000 T sp_exptmod_nct
+00000000 T sp_forcezero
+00000000 T sp_free
+00000000 T sp_grow
+00000000 T sp_init
+00000000 T sp_init_copy
+00000000 T sp_init_multi
+00000000 T sp_init_size
+00000000 T sp_leading_bit
+00000000 r sp_lnz
+00000000 t sp_lshb
+00000000 T sp_lshd
+00000000 T sp_mod
+00000000 T sp_mod_d
+00000000 T sp_mont_norm
+00000000 t _sp_mont_red.constprop.0
+00000000 T sp_mont_setup
+00000000 t _sp_mont_setup.isra.0
+00000000 T sp_mul
+00000000 T sp_mul_2d
+00000000 t _sp_mulmod
+00000000 T sp_mulmod
+00000000 R sp_off_on_addr
+00000000 T sp_prime_is_prime
+00000000 T sp_prime_is_prime_ex
+00000000 t sp_prime_miller_rabin
+00000000 r sp_primes
+00000000 T sp_read_unsigned_bin
+00000000 r sp_rem6.1
+00000000 T sp_rshb
+00000000 T sp_rshd
+00000000 T sp_set
+00000000 T sp_set_bit
+00000000 T sp_set_int
+00000000 T sp_sqr
+00000000 T sp_sqrmod
+00000000 T sp_sub
+00000000 t _sp_sub_d
+00000000 T sp_sub_d
+00000000 t _sp_sub_off
+00000000 T sp_to_unsigned_bin
+00000000 T sp_to_unsigned_bin_len
+00000000 T sp_to_unsigned_bin_len_ct
+00000000 T sp_unsigned_bin_size
+
+sp_x86_64.o:
+
+tfm.o:
+
+wc_dsp.o:
+
+wc_encrypt.o:
+         U wc_AesCbcDecrypt
+         U wc_AesCbcEncrypt
+         U wc_AesFree
+         U wc_AesInit
+         U wc_AesSetKey
+00000000 T wc_AesCbcDecryptWithKey
+00000000 T wc_AesCbcEncryptWithKey
+
+wc_pkcs11.o:
+
+wc_port.o:
+         U fprintf
+         U _impure_ptr
+         U memcmp
+         U strlen
+00000000 T gmtime
+00000000 T gmtime_r
+00000000 b initRefCount
+00000000 T mystrnstr
+00000000 b st_time.0
+00000000 T wc_FreeMutex
+00000000 T wc_FreeRwLock
+00000000 T wc_InitAndAllocMutex
+00000000 T wc_InitMutex
+00000000 T wc_InitRwLock
+00000000 T wc_LockMutex
+00000000 T wc_LockRwLock_Rd
+00000000 T wc_LockRwLock_Wr
+00000000 T wc_strlcat
+00000000 T wc_strlcpy
+00000000 T wc_strsep
+00000000 T wc_strtok
+00000000 T wc_UnLockMutex
+00000000 T wc_UnLockRwLock
+00000000 T wolfCrypt_Cleanup
+00000000 T wolfCrypt_Init
+00000000 r _ytab.1
+
+wolfevent.o:
+
+wolfmath.o:
+         U wc_RNG_GenerateBlock
+00000000 T get_digit
+00000000 T get_digit_count
+00000000 T get_rand_digit
+00000000 T mp_rand
+00000000 T mp_reverse
+
+arc4.o:
+
+blake2b.o:
+
+camellia.o:
+
+dsa.o:
+
+md2.o:
+
+md4.o:
+
+ripemd.o:

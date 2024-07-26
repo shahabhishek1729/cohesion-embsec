@@ -1,0 +1,13 @@
+         U reset_handler
+00000000 T _init
+00000000 T __vectors_start__
+00000004 T _fini
+00000008 A __bss_end__
+00000008 T __bss_start__
+00000008 A __data_end__
+00000008 T __data_load_start__
+00000008 T __data_start__
+00000008 T end
+00000008 A __heap_end__
+00000008 T __heap_start__
+00000400 A __vectors_end__
