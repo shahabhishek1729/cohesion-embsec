@@ -9,6 +9,8 @@ Firmware Bundle-and-Protect Tool
 """
 import argparse
 from pwn import *
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
 
 
 def protect_firmware(infile, outfile, version, message):
@@ -16,14 +18,29 @@ def protect_firmware(infile, outfile, version, message):
     with open(infile, "rb") as fp:
         firmware = fp.read()
 
-    # Append null-terminated message to end of firmware
-    firmware_and_message = firmware + message.encode() + b"\00"
+    # format firmware
+    firmware_packed = p16(version, endian='little') + p16(len(message)) + message.encode(encoding="ascii")
+    firmware_packed = firmware_packed + p16(len(firmware), endian='little') + firmware + b"\00"
+    
+    # pad firmware
+    firmware_packed = pad(firmware_packed, AES.block_size)
 
-    # Pack version and size into two little-endian shorts
-    metadata = p16(version, endian='little') + p16(len(firmware), endian='little')  
+    # TODO: Replace with key file
+    key = b"Segmentation fault (core dumped)"
+    assert len(key) == 32
 
-    # Append firmware and message to metadata
-    firmware_blob = metadata + firmware_and_message
+    cipher = AES.new(key, AES.MODE_GCM)
+    nonce = cipher.nonce
+
+    print(f"The nonce is {nonce} bytes long")
+    print(f"Pre-encryption: {firmware_packed[:30]}")
+    ciphertext, tag = cipher.encrypt_and_digest(firmware_packed)
+    print(f"Post-encryption: {ciphertext[:30]}")
+
+    import sys
+    # encrypted_message = nonce + tag + ciphertext
+    # length of nonce and tag is 16
+    firmware_blob = nonce + tag + ciphertext
 
     # Write firmware blob to outfile
     with open(outfile, "wb+") as outfile:

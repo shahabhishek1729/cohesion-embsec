@@ -34,7 +34,10 @@ ser = serial.Serial("/dev/ttyACM0", 115200)
 RESP_OK = b"\x00"
 FRAME_SIZE = 256
 
+# implementation attempts to treat all frames as equal
+# metadata is handled within bootloader
 
+'''
 def send_metadata(ser, metadata, debug=False):
     assert(len(metadata) == 4)
     version = u16(metadata[:2], endian='little')
@@ -60,7 +63,7 @@ def send_metadata(ser, metadata, debug=False):
     if resp != RESP_OK:
         raise RuntimeError("ERROR: Bootloader responded with {}".format(repr(resp)))
 
-
+'''
 def send_frame(ser, frame, debug=False):
     ser.write(frame)  # Write the frame...
 
@@ -83,13 +86,10 @@ def update(ser, infile, debug):
     with open(infile, "rb") as fp:
         firmware_blob = fp.read()
 
-    metadata = firmware_blob[:4]
-    firmware = firmware_blob[4:]
+    #send_metadata(ser, metadata, debug=debug)
 
-    send_metadata(ser, metadata, debug=debug)
-
-    for idx, frame_start in enumerate(range(0, len(firmware), FRAME_SIZE)):
-        data = firmware[frame_start : frame_start + FRAME_SIZE]
+    for idx, frame_start in enumerate(range(0, len(firmware_blob), FRAME_SIZE)):
+        data = firmware_blob[frame_start : frame_start + FRAME_SIZE]
 
         # Construct frame.
         frame = p16(len(data), endian='big') + data
