@@ -46,11 +46,8 @@ def start(ser):
         print("got a byte")
         pass
 
-def send_frame(ser, frame, debug=False):
+def send_frame(ser):
     ser.write(frame)  # Write the frame...
-
-    if debug:
-        print_hex(frame)
 
     resp = ser.read(1)  # Wait for an OK from the bootloader
 
