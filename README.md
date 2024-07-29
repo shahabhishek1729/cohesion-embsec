@@ -153,6 +153,7 @@ layout src
 list main
 break bootloader.c:50
 ```
+<img width="950" alt="Screenshot 2024-07-29 at 2 38 13 PM" src="https://github.com/user-attachments/assets/5c94fe4d-a535-45c4-868b-a9d9544088dc">
 
 Copyright 2024 The MITRE Corporation. ALL RIGHTS RESERVED <br>
 Approved for public release. Distribution unlimited 23-02181-25.
