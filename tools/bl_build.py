@@ -13,12 +13,40 @@ import os
 import pathlib
 import subprocess
 
+from Crypto.Random import get_random_bytes
+
 REPO_ROOT = pathlib.Path(__file__).parent.parent.absolute()
 BOOTLOADER_DIR = os.path.join(REPO_ROOT, "bootloader")
 
+# lengths for secrets
+AES_KEY_LEN = 32
+TAG_LEN = 16
 
 def make_bootloader() -> bool:
+
+    # create secrets txt file for fw_protect
+    with open("/home/hacker/cohesion-embsec/tools/secret_build_output.txt", "wb") as secrets_txt:
+        # create aes key and c array format
+        aes_key = get_random_bytes(AES_KEY_LEN)
+        c_aes_key = ', '.join(f'0x{byte:02x}' for byte in aes_key)
+
+        # create secrets header for bootloader and write
+        with open("/home/hacker/cohesion-embsec/bootloader/inc/secrets.h", "w") as secrets_header:
+            # write dependencies
+            secrets_header.write(f'#include <stdlib.h>\n')
+
+            # write lengths
+            secrets_header.write(f'#define AES_KEY_LEN {AES_KEY_LEN}\n')
+            secrets_header.write(f'#define TAG_LEN {TAG_LEN}\n')
+
+            # write aes key within "aes_key" section of compiled binary
+            secrets_header.write(f'uint8_t AES_KEY[] = {{{c_aes_key}}};\n')
+
+        # write to secrets text file
+        secrets_txt.write(aes_key)
+
     # Build the bootloader from source.
+
     os.chdir(BOOTLOADER_DIR)
 
     subprocess.call("make clean", shell=True)
@@ -27,7 +55,7 @@ def make_bootloader() -> bool:
     # Return True if make returned 0, otherwise return False.
     return status == 0
 
+#TODO: Beg Iv for Internship
 
 if __name__ == "__main__":
     make_bootloader()
-    #TODO: Beg Iv for internship

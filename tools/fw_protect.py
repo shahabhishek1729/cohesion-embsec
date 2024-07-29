@@ -12,6 +12,8 @@ from pwn import *
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 
+import os
+
 # Challenge constraints
 FIRMWARE_MAX = 30000
 MESSAGE_MAX = 1000
@@ -37,18 +39,20 @@ def protect_firmware(infile, outfile, version, message):
     firmware_packed = pad(firmware_packed, AES.block_size)
 
     # TODO: Replace with key file
-    key = b"Segmentation fault (core dumped)"
-    assert len(key) == 32
+    with open("/home/hacker/cohesion-embsec/tools/secret_build_output.txt", "rb") as secrets_txt:
+        key = secrets_txt.read()
 
     cipher = AES.new(key, AES.MODE_GCM)
     nonce = cipher.nonce
 
     ciphertext, tag = cipher.encrypt_and_digest(firmware_packed)
 
-    import sys
     # encrypted_message = nonce + tag + ciphertext
     # length of nonce and tag is 16
     firmware_blob = nonce + tag + ciphertext
+
+    os.remove("/home/hacker/cohesion-embsec/bootloader/inc/secrets.h")
+    os.remove("/home/hacker/cohesion-embsec/tools/secret_build_output.txt")
 
     # Write firmware blob to outfile
     with open(outfile, "wb+") as outfile:

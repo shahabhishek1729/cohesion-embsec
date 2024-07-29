@@ -43,6 +43,9 @@ void uart_write_hex_bytes(uint8_t, uint8_t *, uint32_t);
 #define UPDATE ((unsigned char)'U')
 #define BOOT ((unsigned char)'B')
 
+// Secrets
+#include "/home/hacker/cohesion-embsec/bootloader/inc/secrets.h"
+
 // Constraint Constants
 /*
     30000 max firmware
@@ -110,8 +113,8 @@ int main(void) {
 
     initialize_uarts(UART0);
 
-    uart_write_str(UART0, "Welcome to the BWSI Vehicle Update Service!\n");
-    uart_write_str(UART0, "Send \"U\" to update, and \"B\" to run the firmware.\n");
+//    uart_write_str(UART0, "Welcome to the BWSI Vehicle Update Service!\n");
+//    uart_write_str(UART0, "Send \"U\" to update, and \"B\" to run the firmware.\n");
 
     int resp;
     while (1) {
@@ -185,16 +188,10 @@ uint8_t decrypt_buffer(uint8_t *buffer, uint32_t buffer_len) {
     // TODO: Incorporate randomly generated key so I don't get flamed on monday
 
     // if the length of the buffer is this small, something went SERIOUSLY wrong...
-    if (buffer_len < (IV_LEN + 16 + 1)) { 
+    if (buffer_len < (IV_LEN + TAG_LEN + 1)) { 
         SysCtlReset();                  
         return (uint8_t) -1;
     }
-
-    const uint8_t aes_key[] = {
-        'S', 'e', 'g', 'm', 'e', 'n', 't', 'a', 't', 'i', 'o', 'n', ' ', 
-        'f', 'a', 'u', 'l', 't', ' ', '(', 'c', 'o', 'r', 'e', ' ', 
-        'd', 'u', 'm', 'p', 'e', 'd', ')'
-    };
 
     // read iv
     uint8_t iv[IV_LEN];
@@ -206,19 +203,19 @@ uint8_t decrypt_buffer(uint8_t *buffer, uint32_t buffer_len) {
     blob_start += IV_LEN;
 
     // read tag
-    uint8_t tag[16]; // the length of the generated tag is 16 bytes
+    uint8_t tag[TAG_LEN]; // the length of the generated tag is 16 bytes
 
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < TAG_LEN; i++) {
         tag[i] = buffer[blob_start+i];
     }
 
-    blob_start += 16;
+    blob_start += TAG_LEN;
 
     /*********************START DECRYPTION PROCESS*********************/
 
     // Initialize AES-GCM decryption context
     Aes aes;
-    wc_AesGcmSetKey(&aes, (const byte *) aes_key, 32); // length of aes key is 32
+    wc_AesGcmSetKey(&aes, (const byte *) AES_KEY, AES_KEY_LEN); // length of aes key is 32
 
     // Perform decryption
     int gcm_code = wc_AesGcmDecrypt(
@@ -229,7 +226,7 @@ uint8_t decrypt_buffer(uint8_t *buffer, uint32_t buffer_len) {
         iv,                              // Nonce/IV
         IV_LEN,                          // Size of nonce/IV
         tag,                             // Authentication tag
-        16,                              // Size of authentication tag
+        TAG_LEN,                              // Size of authentication tag
         NULL,                            // No additional authenticated data (AAD)
         0                                // Size of AAD
     );
@@ -264,7 +261,7 @@ void load_firmware(void) {
     decrypt_buffer(send_buff, send_size);
 
     // where blob starts
-    uint32_t blob_start = IV_LEN + 16; // how it was defined in decrypt
+    uint32_t blob_start = IV_LEN + TAG_LEN; // how it was defined in decrypt
 
     // get version
     version = (uint32_t) send_buff[0+blob_start];
