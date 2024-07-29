@@ -46,7 +46,7 @@ def start(ser):
         print("got a byte")
         pass
 
-def send_frame(ser):
+def send_frame(ser, frame):
     ser.write(frame)  # Write the frame...
 
     resp = ser.read(1)  # Wait for an OK from the bootloader
@@ -56,17 +56,13 @@ def send_frame(ser):
     if resp != RESP_OK:
         raise RuntimeError("ERROR: Bootloader responded with {}".format(repr(resp)))
 
-    if debug:
-        print("Resp: {}".format(ord(resp)))
 
-
-def update(ser, infile, debug):
+def update(ser, infile):
     # Open serial port. Set baudrate to 115200. Set timeout to 2 seconds.
     with open(infile, "rb") as fp:
         firmware_blob = fp.read()
     
     start(ser)
-    #send_metadata(ser, metadata, debug=debug)
 
     for idx, frame_start in enumerate(range(0, len(firmware_blob), FRAME_SIZE)):
         data = firmware_blob[frame_start : frame_start + FRAME_SIZE]
@@ -74,7 +70,7 @@ def update(ser, infile, debug):
         # Construct frame.
         frame = p16(len(data), endian='big') + data
 
-        send_frame(ser, frame, debug=debug)
+        send_frame(ser, frame)
         print(f"Wrote frame {idx} ({len(frame)} bytes)")
 
     print("Done writing firmware.")
@@ -95,10 +91,9 @@ if __name__ == "__main__":
 
     parser.add_argument("--port", help="Does nothing, included to adhere to command examples in rule doc", required=False)
     parser.add_argument("--firmware", help="Path to firmware image to load.", required=False)
-    parser.add_argument("--debug", help="Enable debugging messages.", action="store_true")
     args = parser.parse_args()
 
-    update(ser=ser, infile=args.firmware, debug=args.debug)
+    update(ser=ser, infile=args.firmware)
     ser.close()
 
 

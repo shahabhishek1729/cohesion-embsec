@@ -226,7 +226,7 @@ uint8_t decrypt_buffer(uint8_t *buffer, uint32_t buffer_len) {
         iv,                              // Nonce/IV
         IV_LEN,                          // Size of nonce/IV
         tag,                             // Authentication tag
-        TAG_LEN,                              // Size of authentication tag
+        TAG_LEN,                         // Size of authentication tag
         NULL,                            // No additional authenticated data (AAD)
         0                                // Size of AAD
     );
@@ -383,7 +383,7 @@ void boot_firmware(void) {
 
     // compute the release message address, and then print it
     uint16_t fw_size = *fw_size_address;
-    fw_release_message_address = (uint8_t *)(FW_BASE + fw_size);
+    fw_release_message_address = (uint16_t *)(FW_BASE + fw_size);
 
     uart_write_str(UART0, (char *) fw_release_message_address);
 
