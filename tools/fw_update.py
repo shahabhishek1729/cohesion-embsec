@@ -28,11 +28,9 @@ import time
 import serial
 
 from util import *
+from constants import *
 
-ser = serial.Serial("/dev/ttyACM0", 115200)
-
-RESP_OK = b"\x00"
-FRAME_SIZE = 256
+ser = serial.Serial("/dev/ttyACM0", BAUD_RATE)
 
 # implementation attempts to treat all frames as equal
 # metadata is handled within bootloader
@@ -80,7 +78,7 @@ def update(ser, infile, debug):
     print("Done writing firmware.")
 
     # Send a zero length payload to tell the bootlader to finish writing it's page.
-    ser.write(p16(0x0000, endian='big'))
+    ser.write(p16(END_BYTE, endian='big'))
     resp = ser.read(1)  # Wait for an OK from the bootloader
 
     if resp != RESP_OK:

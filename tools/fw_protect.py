@@ -11,14 +11,28 @@ import argparse
 from pwn import *
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
+from constants import * 
 
 import os
 
-# Challenge constraints
-FIRMWARE_MAX = 30000
-MESSAGE_MAX = 1000
+def protect_firmware(infile: str, outfile: str, version: int, message: str) -> None:
+    """ Read in firmware from a specified file, and write its encrypted form to another file.
 
-def protect_firmware(infile, outfile, version, message):
+    Based on the firmware specified in the file `infile`, this function appends metadata to this
+    firmware and writes an encrypted blob to `outfile`. The output file should have data in the 
+    following form:
+    ---------------------------------------------------------------------------------------------------
+    |  16 bytes  |  16 bytes  |  2 bytes    |  2 bytes          |  Variable  |  Variable  |  Variable  | 
+    |  Nonce     |  Auth Tag  |  Version #  |  Firmware Length  |  Firmware  |  Message   |  Padding   |
+    ---------------------------------------------------------------------------------------------------
+    <----- Plaintext --------> <--------------------------- Encrypted --------------------------------->
+
+    Args:
+        infile (str): The path to the file in which the firmware is stored (in plaintext)
+        outfile (str): The path to which the encrypted blob shown above will be written
+        version (int): The nonnegative version number of the firmware (0 represents a debug version)
+        message (str): The message stored along with the firmware, typically stating the changes made
+    """
     # Load firmware binary from infile
     with open(infile, "rb") as fp:
         firmware = fp.read()
@@ -32,14 +46,13 @@ def protect_firmware(infile, outfile, version, message):
     
     # format firmware
     firmware_packed = p16(version, endian='little') + p16(len(firmware), endian='little')
-    firmware_packed = firmware_packed + firmware + message.encode(encoding="ascii")
-    firmware_packed = firmware_packed + b"\00"
+    firmware_packed += firmware + message.encode(encoding=DEFAULT_ENCODING)
+    firmware_packed += + b"\00"
     
     # pad firmware
     firmware_packed = pad(firmware_packed, AES.block_size)
 
-    # TODO: Replace with key file
-    with open("/home/hacker/cohesion-embsec/tools/secret_build_output.txt", "rb") as secrets_txt:
+    with open(KEY_PATH, "rb") as secrets_txt:
         key = secrets_txt.read()
 
     cipher = AES.new(key, AES.MODE_GCM)
@@ -51,8 +64,8 @@ def protect_firmware(infile, outfile, version, message):
     # length of nonce and tag is 16
     firmware_blob = nonce + tag + ciphertext
 
-    os.remove("/home/hacker/cohesion-embsec/bootloader/inc/secrets.h")
-    os.remove("/home/hacker/cohesion-embsec/tools/secret_build_output.txt")
+    os.remove(SECRETS_PATH)
+    os.remove(BUILD_OUTPUT_PATH)
 
     # Write firmware blob to outfile
     with open(outfile, "wb+") as outfile:

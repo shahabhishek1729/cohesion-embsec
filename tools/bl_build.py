@@ -15,6 +15,8 @@ import subprocess
 
 from Crypto.Random import get_random_bytes
 
+from constants import *
+
 REPO_ROOT = pathlib.Path(__file__).parent.parent.absolute()
 BOOTLOADER_DIR = os.path.join(REPO_ROOT, "bootloader")
 
@@ -25,13 +27,13 @@ TAG_LEN = 16
 def make_bootloader() -> bool:
 
     # create secrets txt file for fw_protect
-    with open("/home/hacker/cohesion-embsec/tools/secret_build_output.txt", "wb") as secrets_txt:
+    with open(BUILD_OUTPUT_PATH, "wb") as secrets_txt:
         # create aes key and c array format
         aes_key = get_random_bytes(AES_KEY_LEN)
         c_aes_key = ', '.join(f'0x{byte:02x}' for byte in aes_key)
 
         # create secrets header for bootloader and write
-        with open("/home/hacker/cohesion-embsec/bootloader/inc/secrets.h", "w") as secrets_header:
+        with open(SECRETS_PATH, "w") as secrets_header:
             # write dependencies
             secrets_header.write(f'#include <stdlib.h>\n')
 
