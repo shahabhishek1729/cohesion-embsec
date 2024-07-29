@@ -75,31 +75,7 @@ uint16_t * fw_release_message_address;
 // Firmware Buffer
 unsigned char data[FLASH_PAGESIZE];
 
-
-// prevent gdb debugging
-#include <stdint.h>
-#include "inc/hw_types.h"
-#include "inc/hw_flash.h"
-#include "inc/hw_memmap.h"
-#include "driverlib/sysctl.h"
-#include "driverlib/flash.h"
-
-void disableDebugging(void){
-    // Write the unlock value to the flash memory protection registers
-    HWREG(FLASH_FMPRE0) = 0xFFFFFFFF;
-    HWREG(FLASH_FMPPE0) = 0xFFFFFFFF;
-
-    // Disable the debug interface by writing to the FMD and FMC registers
-    HWREG(FLASH_FMD) = 0xA4420004;
-    HWREG(FLASH_FMC) = FLASH_FMC_WRKEY | FLASH_FMC_COMT;
- }
-
-
 int main(void) {
-
-    // prevent debugging with gdb
-    disableDebugging();
-
     // Enable the GPIO port that is used for the on-board LED.
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
 
@@ -112,9 +88,6 @@ int main(void) {
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_3);
 
     initialize_uarts(UART0);
-
-//    uart_write_str(UART0, "Welcome to the BWSI Vehicle Update Service!\n");
-//    uart_write_str(UART0, "Send \"U\" to update, and \"B\" to run the firmware.\n");
 
     int resp;
     while (1) {
