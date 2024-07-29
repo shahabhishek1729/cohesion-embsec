@@ -19,7 +19,6 @@ BOOTLOADER_DIR = os.path.join(REPO_ROOT, "bootloader")
 
 def make_bootloader() -> bool:
     # Build the bootloader from source.
-
     os.chdir(BOOTLOADER_DIR)
 
     subprocess.call("make clean", shell=True)
@@ -31,3 +30,4 @@ def make_bootloader() -> bool:
 
 if __name__ == "__main__":
     make_bootloader()
+    #TODO: Beg Iv for internship

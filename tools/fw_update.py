@@ -37,14 +37,8 @@ FRAME_SIZE = 256
 # implementation attempts to treat all frames as equal
 # metadata is handled within bootloader
 
-'''
-def send_metadata(ser, metadata, debug=False):
-    assert(len(metadata) == 4)
-    version = u16(metadata[:2], endian='little')
-    size = u16(metadata[2:], endian='little')
-    print(f"Version: {version}\nSize: {size} bytes\n")
-
-    # Handshake for update
+def start(ser):
+     # Handshake for update
     ser.write(b"U")
 
     print("Waiting for bootloader to enter update mode...")
@@ -52,18 +46,6 @@ def send_metadata(ser, metadata, debug=False):
         print("got a byte")
         pass
 
-    # Send size and version to bootloader.
-    if debug:
-        print(metadata)
-
-    ser.write(metadata)
-
-    # Wait for an OK from the bootloader.
-    resp = ser.read(1)
-    if resp != RESP_OK:
-        raise RuntimeError("ERROR: Bootloader responded with {}".format(repr(resp)))
-
-'''
 def send_frame(ser, frame, debug=False):
     ser.write(frame)  # Write the frame...
 
@@ -85,12 +67,13 @@ def update(ser, infile, debug):
     # Open serial port. Set baudrate to 115200. Set timeout to 2 seconds.
     with open(infile, "rb") as fp:
         firmware_blob = fp.read()
-
+    
+    start(ser)
     #send_metadata(ser, metadata, debug=debug)
 
     for idx, frame_start in enumerate(range(0, len(firmware_blob), FRAME_SIZE)):
         data = firmware_blob[frame_start : frame_start + FRAME_SIZE]
-
+        print("Attempting to send frame!!!")
         # Construct frame.
         frame = p16(len(data), endian='big') + data
 
@@ -102,6 +85,7 @@ def update(ser, infile, debug):
     # Send a zero length payload to tell the bootlader to finish writing it's page.
     ser.write(p16(0x0000, endian='big'))
     resp = ser.read(1)  # Wait for an OK from the bootloader
+
     if resp != RESP_OK:
         raise RuntimeError("ERROR: Bootloader responded to zero length frame with {}".format(repr(resp)))
     print(f"Wrote zero length frame (2 bytes)")
@@ -119,3 +103,6 @@ if __name__ == "__main__":
 
     update(ser=ser, infile=args.firmware, debug=args.debug)
     ser.close()
+
+
+
