@@ -82,15 +82,13 @@ unsigned char data[FLASH_PAGESIZE];
 #include "driverlib/flash.h"
 
 void disableDebugging(void){
+    // Write the unlock value to the flash memory protection registers
+    HWREG(FLASH_FMPRE0) = 0xFFFFFFFF;
+    HWREG(FLASH_FMPPE0) = 0xFFFFFFFF;
 
-// Write the unlock value to the flash memory protection registers
-HWREG(FLASH_FMPRE0) = 0xFFFFFFFF;
-HWREG(FLASH_FMPPE0) = 0xFFFFFFFF;
-
-// Disable the debug interface by writing to the FMD and FMC registers
-HWREG(FLASH_FMD) = 0xA4420004;
-HWREG(FLASH_FMC) = FLASH_FMC_WRKEY | FLASH_FMC_COMT;
-
+    // Disable the debug interface by writing to the FMD and FMC registers
+    HWREG(FLASH_FMD) = 0xA4420004;
+    HWREG(FLASH_FMC) = FLASH_FMC_WRKEY | FLASH_FMC_COMT;
  }
 
 // Delay to allow time to connect GDB
@@ -122,7 +120,7 @@ void debug_delay_led() {
 int main(void) {
 
     // prevent debugging with gdb
-    //disableDebugging();
+    disableDebugging();
 
     // Enable the GPIO port that is used for the on-board LED.
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
@@ -135,7 +133,7 @@ int main(void) {
     // enable the GPIO pin for digital function.
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_3);
 
-    // debug_delay_led();
+    debug_delay_led();
 
     initialize_uarts(UART0);
 
@@ -313,15 +311,12 @@ void load_firmware(void) {
         old_version = 2;
     }
 
-    if (version != 0 && version < old_version) {
+    if (version < old_version) {
         uart_write(UART0, ERROR); // Reject the metadata.
         SysCtlReset();            // Reset device
         return;
-    } else if (version == 0) {
-        // If debug firmware, don't change version
-        version = old_version;
-    }
-
+    } 
+  
     // Write new firmware size and version to Flash
     // Create 32 bit word for flash programming, version is at lower address, size is at higher address
     uint32_t metadata = ((fw_size & 0xFFFF) << 16) | (version & 0xFFFF);
