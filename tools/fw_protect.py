@@ -39,10 +39,10 @@ def protect_firmware(infile: str, outfile: str, version: int, message: str) -> N
 
     # Check constraints and reject everything that disobeys them
     if len(firmware) > FIRMWARE_MAX:
-        raise ValueError("Firmware is too big sneaky boi")
+        raise ValueError(f"Firmware is too big sneaky boi: the max size allowable is {FIRMWARE_MAX} bytes, you sent in {len(firmware)} bytes")
     
     if len(message) > MESSAGE_MAX:
-        raise ValueError("Message needs to lose some pounds, and not the british ones")
+        raise ValueError(f"Message needs to lose some pounds, and not the british ones: the max size allowable is {MESSAGE_MAX} bytes, you sent in {len(message)} bytes")
     
     # format firmware
     firmware_packed = p16(version, endian='little') + p16(len(firmware), endian='little')
@@ -52,7 +52,7 @@ def protect_firmware(infile: str, outfile: str, version: int, message: str) -> N
     # pad firmware
     firmware_packed = pad(firmware_packed, AES.block_size)
 
-    with open(KEY_PATH, "rb") as secrets_txt:
+    with open(BUILD_OUTPUT_PATH, "rb") as secrets_txt:
         key = secrets_txt.read()
 
     cipher = AES.new(key, AES.MODE_GCM)

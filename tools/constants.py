@@ -1,4 +1,3 @@
-KEY_PATH = "/home/hacker/cohesion-embsec/tools/secret_build_output.txt"
 SECRETS_PATH = "/home/hacker/cohesion-embsec/bootloader/inc/secrets.h"
 BUILD_OUTPUT_PATH = "/home/hacker/cohesion-embsec/tools/secret_build_output.txt"
 
