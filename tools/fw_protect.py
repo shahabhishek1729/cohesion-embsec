@@ -47,7 +47,7 @@ def protect_firmware(infile: str, outfile: str, version: int, message: str) -> N
     # format firmware
     firmware_packed = p16(version, endian='little') + p16(len(firmware), endian='little')
     firmware_packed += firmware + message.encode(encoding=DEFAULT_ENCODING)
-    firmware_packed += + b"\00"
+    firmware_packed += b"\00"
     
     # pad firmware
     firmware_packed = pad(firmware_packed, AES.block_size)
