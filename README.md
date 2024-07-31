@@ -2,6 +2,19 @@
 
 Installation and development guide for the most secure (TM) automotive bootloader on the planet! We guarentee that cars running our software will be unhackable (provided hacking is not attempted). Of all the automotive bootloaders, this is certainly one of them. Read on and tremble at our embedded security skillz.
 
+# Team Cohesion's Solution
+<img width="907" alt="Screenshot 2024-07-31 at 10 24 02 AM" src="https://github.com/user-attachments/assets/d6196b70-4e4d-4f11-a5d3-6cec37376b10">
+
+Our solution uses AES-GCM (Galois Counter Mode) with a 256-bit key. GCM handles confidentiality, integrity and authenticity all at once, **provided the key is secured**; at its core, this type of design allows for only one point of failure (i.e., the security of the key), which can compromoise the entire system. However, without access to the key, the attacker is effectively powerless to:
+1) decrypt our data,
+2) tamper with it, or
+3) attempt to send their own, unauthorized data.
+
+
+
+
+Our key is stored in microcontroller's flash memory (which, being non-volatile, means the key should persist through reboots of the device) – since debugging is disallowed, this should prevent basic dumping of the key from memory in GDB.
+
 ### Internal Notes
 
 ```
